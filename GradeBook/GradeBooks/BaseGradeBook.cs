@@ -15,9 +15,10 @@ namespace GradeBook.GradeBooks
         public List<Student> Students { get; set; }
         public GradeBookType Type { get; set; }
         public bool IsWeighted { get; set; }
-        public  BaseGradeBook(string name)
+        public  BaseGradeBook(string name, bool isweighted)
         {
             Name = name;
+            IsWeighted = isweighted;
             Students = new List<Student>();
         }
 
@@ -35,7 +36,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
-                Console.WriteLine("Student {0} was not found, try again.", name);
+                Console.WriteLine("student {0} was not found, try again.", name);
                 return;
             }
             Students.Remove(student);
@@ -48,7 +49,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
-                Console.WriteLine("Student {0} was not found, try again.", name);
+                Console.WriteLine("student {0} was not found, try again.", name);
                 return;
             }
             student.AddGrade(score);
@@ -61,7 +62,7 @@ namespace GradeBook.GradeBooks
             var student = Students.FirstOrDefault(e => e.Name == name);
             if (student == null)
             {
-                Console.WriteLine("Student {0} was not found, try again.", name);
+                Console.WriteLine("student {0} was not found, try again.", name);
                 return;
             }
             student.RemoveGrade(score);
@@ -111,12 +112,28 @@ namespace GradeBook.GradeBooks
             {
                 case 'A':
                     return 4;
+                    if (IsWeighted && (studentType == StudentType.Honors || studentType == StudentType.DualEnrolled))
+                        return 5;
+                    else
+                        return 4;
                 case 'B':
                     return 3;
+                    if (IsWeighted && (studentType == StudentType.Honors || studentType == StudentType.DualEnrolled))
+                        return 4;
+                    else
+                        return 3;
                 case 'C':
                     return 2;
+                    if (IsWeighted && (studentType == StudentType.Honors || studentType == StudentType.DualEnrolled))
+                        return 3;
+                    else
+                        return 2;
                 case 'D':
                     return 1;
+                    if (IsWeighted && (studentType == StudentType.Honors || studentType == StudentType.DualEnrolled))
+                        return 2;
+                    else
+                        return 1;
                 case 'F':
                     return 0;
             }
